@@ -1,0 +1,26 @@
+name: CI - Build and Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout du code
+      uses: actions/checkout@v3
+
+    - name: 🛠️ Installer les dépendances
+      run: sudo apt-get update && sudo apt-get install -y g++ make
+
+    - name: ✅ Compiler les tests
+      run: |
+        mkdir build
+        g++ -std=c++17 -Wall -Iinclude -Itests tests/test_editor.cpp src/editor.cpp -o build/test_editor
+
+    - name: 🧪 Exécuter les tests unitaires
+      run: ./build/test_editor
