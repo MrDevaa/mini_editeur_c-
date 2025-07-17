@@ -158,3 +158,86 @@ docker rmi mini-editeur
 ```
 
 ---
+
+# Tests unitaires de l'éditeur de texte (Editor)
+
+Ce fichier explique comment mettre en place et exécuter des **tests unitaires** pour la classe `Editor` du projet **mini éditeur de texte** en C++, en utilisant **Catch2**.
+
+---
+
+## 📦 Prérequis
+
+- Un compilateur C++ compatible C++17 (`g++` recommandé)
+- Catch2 (version 2) — fichier `catch.hpp`
+
+Téléchargement recommandé :  
+➡️ https://github.com/catchorg/Catch2/releases/tag/v2.13.10
+
+Téléchargez le fichier `catch.hpp` depuis :  
+➡️ https://raw.githubusercontent.com/catchorg/Catch2/v2.13.10/single_include/catch2/catch.hpp
+
+Placez ce fichier dans le dossier `tests/` de votre projet.
+
+---
+
+## 🗂️ Structure des fichiers
+
+```
+mini_editeur/
+├── tests/
+│   ├── catch.hpp
+│   └── test_editor.cpp
+```
+
+---
+
+## ✍️ Exemple de test (tests/test_editor.cpp)
+
+```cpp
+#define CATCH_CONFIG_MAIN
+#include "catch.hpp"
+#include "../include/editor.h"
+
+TEST_CASE("Ajout de lignes dans l'éditeur") {
+    Editor editor;
+    editor.addLine("Ligne 1");
+    editor.addLine("Ligne 2");
+    REQUIRE(editor.saveToFile("test_out.txt") == true);
+}
+
+TEST_CASE("Chargement d'un fichier texte") {
+    Editor editor;
+    editor.addLine("Test");
+    editor.saveToFile("temp.txt");
+
+    Editor loaded;
+    REQUIRE(loaded.loadFromFile("temp.txt") == true);
+}
+```
+
+---
+
+## ⚙️ Compilation des tests
+
+Depuis la racine du projet, exécutez :
+
+```bash
+g++ -std=c++17 -Wall -Iinclude -Itests tests/test_editor.cpp src/editor.cpp -o test_editor
+```
+
+Puis lancez les tests :
+
+```bash
+test_editor
+```
+
+Catch2 affichera automatiquement tous les résultats.
+
+---
+
+## ✅ Résultat attendu
+
+## Exemple
+![Logo du projet](test.png)
+
+---
